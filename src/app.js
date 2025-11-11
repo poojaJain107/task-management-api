@@ -1,6 +1,7 @@
 require('express-async-errors');
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const config = require('./config/config');
 const { connectDB } = require('./config/database');
 const errorHandler = require('./middleware/errorHandler');
@@ -14,6 +15,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+
+// Serve uploaded files as static files
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Health check route
 app.get('/health', (req, res) => {

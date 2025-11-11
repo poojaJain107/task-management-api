@@ -184,9 +184,57 @@ const updateProfile = async (req, res, next) => {
   }
 };
 
+// Upload profile picture
+const uploadProfilePicture = async (req, res, next) => {
+  try {
+    // Check if file was uploaded
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'No file uploaded. Please upload an image file.',
+      });
+    }
+
+    // Generate file URL path (relative to uploads directory)
+    const profilePictureUrl = `/uploads/${req.file.filename}`;
+
+    // Update user with new profile picture path
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { profilePicture: profilePictureUrl },
+      { new: true, runValidators: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile picture uploaded successfully',
+      profilePictureUrl: profilePictureUrl,
+      user: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        profilePicture: user.profilePicture,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    // If there's an error, try to delete the uploaded file
+    if (req.file) {
+      const fs = require('fs');
+      const filePath = req.file.path;
+      fs.unlink(filePath, (err) => {
+        if (err) console.error('Error deleting uploaded file:', err);
+      });
+    }
+    next(error);
+  }
+};
+
 module.exports = {
   register,
   login,
   getCurrentUser,
   updateProfile,
+  uploadProfilePicture,
 };

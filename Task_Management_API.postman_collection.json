@@ -121,7 +121,38 @@
               "host": ["{{baseUrl}}"],
               "path": ["api", "auth", "update-profile"]
             },
-            "description": "Update user profile information"
+            "description": "Update user profile information (firstName, lastName, profilePicture URL)"
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Profile Picture",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "profilePicture",
+                  "type": "file",
+                  "src": "",
+                  "disabled": false
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/upload-profile-picture",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "upload-profile-picture"]
+            },
+            "description": "Upload a profile picture image file (JPEG, PNG, GIF, WebP). Max 5MB. Returns profilePictureUrl path."
           },
           "response": []
         }
