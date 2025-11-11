@@ -1,0 +1,572 @@
+{
+  "info": {
+    "name": "Task Management API",
+    "description": "Complete API collection for Task Management system with user authentication, task CRUD operations, and admin features",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "API Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            },
+            "description": "Check if the API is running"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"profilePicture\": \"https://example.com/pic.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Register a new user account"
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Login with email and password"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "me"]
+            },
+            "description": "Get the profile of the authenticated user"
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"profilePicture\": \"https://example.com/newpic.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/update-profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "update-profile"]
+            },
+            "description": "Update user profile information"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Task Management",
+      "item": [
+        {
+          "name": "Create Task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Complete project documentation\",\n  \"description\": \"Write comprehensive API documentation\",\n  \"priority\": \"high\",\n  \"status\": \"pending\",\n  \"dueDate\": \"2025-12-31\",\n  \"tags\": [\"documentation\", \"urgent\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks"]
+            },
+            "description": "Create a new task (User only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Tasks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks"]
+            },
+            "description": "Get all tasks for the authenticated user"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Tasks (Filtered by Status)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks?status=pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending"
+                }
+              ]
+            },
+            "description": "Get tasks filtered by status (pending, in-progress, completed)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Tasks (Filtered by Priority)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks?priority=high",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks"],
+              "query": [
+                {
+                  "key": "priority",
+                  "value": "high"
+                }
+              ]
+            },
+            "description": "Get tasks filtered by priority (low, medium, high)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Task",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/:taskId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks", ":taskId"],
+              "variable": [
+                {
+                  "key": "taskId",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get a specific task by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Task",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated task title\",\n  \"description\": \"Updated description\",\n  \"priority\": \"medium\",\n  \"status\": \"in-progress\",\n  \"dueDate\": \"2025-12-25\",\n  \"tags\": [\"updated\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/:taskId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks", ":taskId"],
+              "variable": [
+                {
+                  "key": "taskId",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Update a task (creator only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Complete Task",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/:taskId/complete",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks", ":taskId", "complete"],
+              "variable": [
+                {
+                  "key": "taskId",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Mark a task as completed (creator only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Task",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/:taskId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tasks", ":taskId"],
+              "variable": [
+                {
+                  "key": "taskId",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Delete a task (creator only)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Get All Tasks (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/tasks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "tasks"]
+            },
+            "description": "Get all tasks in the system (Admin only, read-only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Tasks (Admin - Filtered by Status)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/tasks?status=completed",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "tasks"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "completed"
+                }
+              ]
+            },
+            "description": "Get all tasks filtered by status (Admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Task (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/tasks/:taskId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "tasks", ":taskId"],
+              "variable": [
+                {
+                  "key": "taskId",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get a specific task (Admin only, read-only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "users"]
+            },
+            "description": "Get all users in the system (Admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single User (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users/:userId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "users", ":userId"],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get a specific user (Admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Tasks by User (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/tasks/user/:userId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "tasks", "user", ":userId"],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get all tasks created by a specific user (Admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Tasks by User (Admin - Filtered)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/tasks/user/:userId?status=completed&priority=high",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "tasks", "user", ":userId"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "completed"
+                },
+                {
+                  "key": "priority",
+                  "value": "high"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get tasks by user with filters (Admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Statistics (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/statistics",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "statistics"]
+            },
+            "description": "Get system-wide statistics and analytics (Admin only)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
